@@ -1,0 +1,361 @@
+<!-- JQUERY SCRIPTS -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- DATA TABLES -->
+<script src="assets/js/dataTables/jquery.dataTables.js"></script>
+<script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+<script src="assets/js/bootstrap-datepicker.js"></script>
+<script src="assets/js/prettify.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    //Data Table
+        $('.linkrow').on('click', function() {
+            window.document.location = $(this).data("href");
+        });
+
+        //Toggle reply collapse
+        $('#doCollapse').on('click', function() {
+            $('#reply').collapse('toggle')
+            $('#reply').on('show.bs.collapse', function() {
+                $('#collapseicon').removeClass('fa-plus').addClass('fa-minus');
+            })
+            $('#reply').on('hide.bs.collapse', function() {
+                $('#collapseicon').removeClass('fa-minus').addClass('fa-plus');
+            })
+        });
+
+        //Bootstrap Data Table
+        $('#dtable').DataTable({
+            "oLanguage": {
+                "sEmptyTable":     "No Records Found",
+                "sInfo":           "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
+                "sInfoFiltered":   "(filtered from _MAX_ total entries)",
+                "sInfoPostFix":    "",
+                "sInfoThousands":  ",",
+                "sLengthMenu":     "Show _MENU_ entries",
+                "sLoadingRecords": "Loading...",
+                "sProcessing":     "Processing...",
+                "sSearch":         "<strong>Search: </strong>",
+                "sZeroRecords":    "No Records Found",
+                "oPaginate": {
+                    "sFirst":    "First",
+                    "sLast":     "Last",
+                    "sNext":     "Next",
+                    "sPrevious": "Previous"
+                }
+            },
+            "pageLength": 10,
+            "order": [
+                [ 0, "asc" ]
+            ],
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],        "stateSave": true
+        });
+
+        $(".dataTables_filter input")
+            .attr("placeholder", "Enter search term...")
+            .attr("size", "50");
+
+            // highlight remembered filter on page re-load
+        var rememberedFilterTerm = table.state().columns[2].search.search;
+        if (rememberedFilterTerm) {
+            $(".view-filter-btns a span").each(function(index) {
+                if ($(this).text().trim() == rememberedFilterTerm) {
+                    $(this).parent('a').addClass('active');
+                    $(this).parent('a').find('i').switchClass('fa-circle-o', 'fa-dot-circle-o', 0);
+                }
+            });
+        }
+
+        //End Bootstrap Data Table
+        
+</script>
+<script>
+    $(function() {
+        window.prettyPrint && prettyPrint();
+        
+        //Date of Birth Date Picker
+        var dob = $('#dob').datepicker();
+        
+        dob.on('changeDate', function() {
+            $(this).datepicker('hide');
+        });
+        
+        var $icaseDate = $('input[type=date]').datepicker();
+        
+        //Casediary Date Picker
+        var casedate = $('#casedate').datepicker();
+        
+        casedate.on('changeDate', function() {
+            $(this).datepicker('hide');
+        })
+        
+        //Time Timepicker
+        $('.time').datetimepicker({
+            language:  'en',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0
+        });
+        //DateTime Picker
+        $('.datetimepicker').datetimepicker({
+            language:  'en',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0,
+		autoclose: 1,
+        showMeridian: 1
+        });
+        
+        
+        //Get LGA
+        var $state = $('#txtstate');
+        var $lga = $('#sellga'),
+            $crno = $('#crnos'),
+            $suspanel = $('.suspanel');
+        
+        $suspanel.addClass('hidden');
+        
+        $state.on('change', function() {
+            $.post('get_lgas.php', { state: $state.val() }, function(data) {
+                $lga.html(data);
+            })
+        })
+        
+        $crno.on('change', function() {
+            $.post('validate_crno.php', { crno: $crno.val() }, function(data) {
+                
+                if(data == "valid") {
+                    $('#errMsg').html('');
+                    $suspanel.removeClass('hidden');
+                } else {
+                    $('#errMsg').html(data);
+                    $suspanel.addClass('hidden');
+                }
+            })
+        })
+        
+        //Assign to Team
+        
+        var $assignToTeam = $('#assign_to_team'),
+            $caseno = $('#caseno');
+        var $assignBtn = $('#assignBtn');
+        
+       
+        $assignBtn.on('click', function() {
+            $.post('jaxify.php', { 'process':'assignToTeam', 'team':$assignToTeam.val(), 'crno':$caseno.val(), 'button':$assignBtn.text() }, function(data) {
+                if(data == "Success") {
+                    $('#caseTeamsRes').html('<span class="text-success">Case assigned to Team</span>');
+                    $('#assignToTeamRes').empty().load('load_assign_team.php', {cid:$('#caseid').val()});
+
+                } else if(data = "failed") {
+                    $('#caseTeamsRes').html('<span class="text-danger">Failed assigning case to team</span>');
+                }
+            })
+        });
+        
+        //Load Team Assigned to
+        $('#assignToTeamRes').load('load_assign_team.php', {cid:$('#caseid').val()});
+        
+        
+        $('#')
+        //Get Case Data
+        var $okayBtn = $('#okayBtn'),
+            
+            $getCaseModl = $('#getCaseModl'),
+            $getCaseOrg = $('#getCaseOrg'),
+            $getCaseOrgID = $('#getCaseOrgID'),
+            $updFwdFromModl = $('#updFwdFromModl'),
+            $getCaseState = $('#getCaseState');
+        
+        //Forward Case Variables
+        var $fwdCase = $('#crno'),
+            //To
+            $fwdToModl = $('#toModl'),
+            $fwdToModlID = $('#toModlID'),
+            //From
+            $fwdFromModl = $('#fromModl'),
+            $fwdFromModlID = $('#fromModlID'),
+            $fwdFromCaseOrgName = $('#fromCaseOrgName'),
+            //Message
+            $fwdMessage = $('#fwdMsg'),
+            //Private
+            $fwdPrivate = $('#fwdPrivate'),
+            //Forward Case Button
+            $fwdCaseBtn = $('#fwdCaseBtn');
+        
+        //Get the module to send to as id
+        $getCaseModl.on('change', function() {
+            //alert($fwdto.val())
+            $.post('jaxify.php', { 'getprocess': 'true', 'getstate': $getCaseState.val(), 'getmodule': $getCaseModl.val() }, function(data) {
+                $fwdToModlID.html(data);
+            })
+        })
+        
+        //Initiate Bootstrap Modal for Forward Case
+        var $fwdModal = $('#fwdModal');
+        
+        $okayBtn.on('click', function() {
+            $fwdModal.modal({
+                backdrop: 'static'
+            })
+            //Get Casediary Module
+            $.post('jaxify.php', {modValidate: "true", crno:$fwdCase.val()}, function(data) {
+                $fwdFromModl.val(data);
+            });
+            
+            $fwdFromCaseOrgName.val($getCaseOrg.val());
+            $fwdFromModlID.val($getCaseOrgID.val());
+            $fwdToModl.val($getCaseModl.val());
+        })
+        
+        $fwdCaseBtn.on('click', function() {
+            $.post('jaxify.php', {
+                btn: 'click',
+                crno: $fwdCase.val(),
+                toModl: $fwdToModl.val(),
+                toModlID: $fwdToModlID.val(),
+                fromModl: $fwdFromModl.val(),
+                fromModlID: $fwdFromModlID.val(),
+                fwdMessage: $fwdMessage.val(),
+                private: $fwdPrivate.val()
+            }, function(data) {
+                alert(data)
+                $fwdModal.modal('hide');
+                $fwdModal.on('hidden.bs.modal', function() {
+                    $('#caseLogTrail').empty().load('load_casetrail.php', {id:$fwdCase.val()});
+                    
+                    $('#fwdResult').empty().load('load_fileloc.php', {id:$fwdCase.val()})
+                })
+                
+            });
+        })
+        
+        //Load
+        $('#caseLogTrail').load('load_casetrail.php', {id:$fwdCase.val()});
+                    
+        $('#fwdResult').load('load_fileloc.php', {id:$fwdCase.val()});
+        
+        //Get IPO team on change and select of organization
+        var $orgid = $('#orgid'),
+            $team = $('#ipoTeam');
+        
+        $orgid.on('change', function() {
+            $.post('jaxify.php', {getIPOTeam:'true', orgid:$orgid.val()}, function(data) {
+                $team.html(data);
+            })
+        })
+        
+        //Inmate Record MOdal
+        var $inmateRecordModalBtn = $('#priRecordModalBtn'),
+            $inmateModal = $('#inmateModal');
+        $inmateRecordModalBtn.on("click", function() {
+            
+            $inmateModal.modal({
+                backdrop: 'static'
+            });
+        });
+        
+        //Bailour Modal
+        var $bailoutBtn = $('#bailoutBtn'),
+            $bailoutModal = $('#bailoutModal');
+        $bailoutBtn.on('click', function() {
+            $bailoutModal.modal({
+                backdrop: 'static'
+            })
+        })
+        
+        //Add Inmate
+        var $addInmateBtn = $('#addInmateBtn');
+        $addInmateBtn.on('click', function() {
+            var $inm8Form = $('#inmateForm');
+            $.post('jaxify.php', $inm8Form.serializeArray(), function(data) {
+                alert(data);
+                $inmateModal.modal('hide');
+            });
+        })
+        
+        //Bailout
+        var $bailSubBtn = $('#bailSubBtn'),
+            $bailSuspect = $('#bailSuspect'),
+            $bailCase = $('#bailCase');
+        $bailSubBtn.on('click', function() {
+            var $bailoutForm = $('#bailoutForm'),
+                $bailSuspect = $('#bailSuspID'),
+                $bailCase = $('#bailCRNO');
+            $.post('jaxify.php', $bailoutForm.serializeArray(), function(data) {
+                alert(data);
+                $('#bailInfo').empty().load('load_bail_info.php', {bailSuspect:$bailSuspect.val(), bailCase:$bailCase.val()});
+                
+                $bailoutForm.each(function() {
+                    this.reset();
+                })
+                $bailoutModal.modal('hide');
+            })
+        })
+        //Load / Show Bail Info
+        $('#bailInfo').empty().load('load_bail_info.php', {bailSuspect:$bailSuspect.val(), bailCase:$bailCase.val()});
+        
+        //Load Prison Info
+        $('#prisonsInfo').empty().load('load_prison_info.php', {bailSuspect:$bailSuspect.val(), bailCase:$bailCase.val()});
+        
+        //Add New Warder Modal
+        var $addWarderModal = $('#addWarders'),
+            $addWarderBtn = $('.addWardersBtn');
+        $addWarderBtn.on('click', function() {
+            $addWarderModal.modal({
+                backdrop: 'static'
+            })
+        })
+        
+        //Upload base64 Image
+        $('#photo').on('change', function() {
+            var file = $(this)[0].files[0]; //jquery way of get the file handle or use javascript way using the line below
+            //var file = document.getElementById('photo').files[0];
+            var imageData = $('#imgData');
+
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function() {
+                imageData.val(reader.result);
+                $('#image').attr('src', imageData.val());
+            }, false)
+
+            if(file) {
+                reader.readAsDataURL(file);
+            }
+        })
+        
+        $('#saveWarderBtn').on('click', function() {
+            var $addWarderForm = $('#addWarderForm');
+            
+            $.post('jaxify.php', $addWarderForm.serializeArray(), function(data) {
+                alert(data);
+            })
+        })
+    })
+</script>
+<!-- METISMENU SCRIPTS -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- MORRIS CHART SCRIPTS -->
+<script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+<script src="assets/js/morris/morris.js"></script>
+<!-- CUSTOM SCRIPTS -->
+<script src="assets/js/custom.js"></script>
+<script type="text/javascript" src="assets/js/Chart.min.js"></script>
+<script type="text/javascript" src="assets/js/Chart.js"></script>
+<script type="text/javascript" src="assets/js/app.js"></script>

@@ -1,0 +1,75 @@
+<nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.php">iCase</a> 
+    </div>
+    <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 14px;"> 
+                <b><?php echo date("l, F d, Y");?></b>&nbsp;&nbsp;
+        <a href="logout.php?a=logout&logout=true" class="btn btn-danger square-btn-adjust">Log Out</a> 
+    </div>
+</nav>   
+<!-- /. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li class="text-center">
+               <!-- <img src="assets/img/find_user.png" class="user-image img-responsive"/> -->
+                <img src="assets/img/justice5.png" class="user-image img-responsive"/>
+            </li>
+            <li>
+                <a class="active-menu" href="index.php"><i class="fa fa-connectdevelop fa-2x"></i><strong>D A S H B O A R D</strong></a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-venus fa-2x"></i> <b>P O L I C E </b><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="orgs.php"><i class="fa fa-folder-open-o fa-2x"></i><b>Organizations</b></a></li>
+                    <li> <a href="casediary.php"><i class="fa fa-folder-open-o fa-2x"></i><b>Case Diary</b></a></li>
+               <!-- <li><a href="suspects.php"><i class="fa fa-users fa-2x"></i><b>Suspects</b></a></li>
+                    <li><a href="arrests.php"><i class="fa fa-pied-piper-alt fa-2x"></i><b>Arrests</b></a></li> -->
+                    <li><a href="ipo.php"><i class="fa fa-user fa-2x"></i><b>IPOs</b></a></li>
+                </ul>
+            </li>  
+
+            <li>
+                <a href="#"><i class="fa fa-venus fa-2x"></i> <b>L E G A L </b><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="mojs.php"><i class="fa fa-mortar-board fa-2x"></i><b>Ministries of Justice</b></a></li>
+                    <li><a href="counsels.php"><i class="fa fa-mortar-board fa-2x"></i><b>Counsels</b></a></li>
+                    <li><a href="#"><i class="fa fa-file-text-o fa-2x"></i><b>MOJ Entries</b></a></li>
+                    <li><a href="#"><i class="fa fa-gear fa-2x"></i><b>Case Progress</b></a></li>
+                </ul>
+            </li>
+
+            <li>  
+                <a href="#"><i class="fa fa-venus fa-2x"></i> <b>C O U R T </b><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="courts.php"><i class="fa fa-user fa-2x"></i><b>Courts Info.</b></a></li>
+                    <li><a href="judges.php"><i class="fa fa-user fa-2x"></i><b>Profile of Judges</b></a></li>
+                    <li><a href="#">Court Case<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li><a href="#">Casefile</a></li>
+                            <li><a href="#">Hearings</a></li>
+                            <li><a href="#">Adjournments</a></li>
+                            <li><a href="#">Case Records</a></li>
+                        </ul>
+
+                    </li>
+                </ul>
+            <li>  
+                <a href="#"><i class="fa fa-venus fa-2x"></i> <b>P R I S O N </b><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="prisoners.php"><i class="fa fa-user fa-2x"></i><b>Profile of ATPs</b></a></li>
+                    <li><a href="#"><i class="fa fa-user fa-2x"></i><b>Admission Records</b></a></li>
+                    <li><a href="#"><i class="fa fa-user fa-2x"></i><b>Discharge Records</b></a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
+</nav>
